@@ -26,9 +26,12 @@ class AdminController extends Controller
 
         if (Auth::attempt($credentials)) {
             // Authentication passed...
-            return redirect()->intended('admin')->with('success', 'Login berhasil');;
-        }else{
-            return redirect()->back()->with('error', 'Username atau password salah.');
+            return redirect()->route('admin')->with('success', 'Login berhasil');;
+        } else {
+            return redirect()
+                ->back()
+                ->withErrors('Username atau password salah.')
+                ->withInput();
         }
     }
 

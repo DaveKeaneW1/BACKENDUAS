@@ -23,11 +23,24 @@
                                     placeholder="Password" onfocus="this.placeholder = ''"
                                     onblur="this.placeholder = 'Password'">
                             </div>
-                            <div class="col-md-12 form-group" style="margin-bottom: 70px">
-                                <button type="submit" value="submit" class="primary-btn">Log In</button>
+                            <div class="col-md-12 form-group" style="margin-bottom: 30px">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mb-4 mt-3">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
 
+                                <button type="submit" value="submit" class="primary-btn">Log In</button>
                             </div>
                         </form>
+                        <div class="col-md-12"
+                            style="text-align: left; max-width: 385px; margin: auto; margin-bottom: 70px">
+                            <a href="{{ route('home') }}">Kembali ke halaman customer</a>
+                        </div>
                     </div>
                 </div>
             </div>

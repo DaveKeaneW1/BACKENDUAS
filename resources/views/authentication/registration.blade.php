@@ -26,8 +26,8 @@
                             id="contactForm" novalidate="novalidate">
                             @csrf
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Name"
-                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name'">
+                                <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama"
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Nama'">
                             </div>
                             <div class="col-md-12 form-group">
                                 <input type="email" class="form-control" id="email" name="email" placeholder="Email"
@@ -39,17 +39,30 @@
                                     onblur="this.placeholder = 'Password'">
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="noHp" name="noHp" placeholder="No. HP"
-                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'No. HP'">
+                                <input type="text" class="form-control" id="noHp" name="noHp"
+                                    placeholder="No. HP" onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'No. HP'">
                             </div>
                             <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="alamat" name="alamat" placeholder="Alamat"
-                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Alamat'">
+                                <input type="text" class="form-control" id="alamat" name="alamat"
+                                    placeholder="Alamat" onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'Alamat'">
                             </div>
                             <div class="col-md-12 form-group" style="margin-bottom: 70px">
-                                <button type="submit" value="submit" class="primary-btn">Create Account</button>
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mb-4 mt-3">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
 
+                                <button type="submit" value="submit" class="primary-btn">Create Account</button>
                             </div>
+
+
                         </form>
                     </div>
                 </div>

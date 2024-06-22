@@ -2,7 +2,7 @@
 <footer class="footer-area section_gap" style="padding-top: 10px; padding-bottom: 50px;">
     <div class="container">
         <div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
-            <p class="footer-text m-0" style="padding-top: 40px">
+            <p class="footer-text m-0 {{ request()->is('admin*') ? 'admin' : '' }}" style="padding-top: 40px">
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 Copyright &copy;
                 <script>

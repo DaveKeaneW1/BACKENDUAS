@@ -52,33 +52,66 @@
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <h3>{{ $product->nama }}</h3>
                             <h2>Rp. {{ number_format($product->harga, 0, '.', '.') }}</h2>
-                            <ul class="list">
-                                <li><a class="active" href="#"><span>Category</span> :
-                                        {{ $product->category_nama }}</a>
-                                </li>
-                                <li><a href="#"><span>Stok</span> : {{ $product->stok }}</a></li>
-                            </ul>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 100px">Category</td>
+                                        <td style="width: 20px">:</td>
+                                        <td style=" color: var(--orange)">{{ $product->category_nama }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Stok</td>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($product->stok > 0)
+                                                {{ $product->stok }}
+                                            @else
+                                                <span style="color: var(--red);">Stok Habis</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <p>{{ $product->deskripsi }}</p>
-                            <div class="product_count">
-                                <label for="qty">Quantity:</label>
-                                <input type="text" name="qty" id="sst" maxlength="12" value="1"
-                                    title="Quantity:" class="input-text qty">
-                                <button
-                                    onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-                                    class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                                <button
-                                    onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
-                                    class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
-                            </div>
-                            <div class="card_area d-flex align-items-center">
-                                <button type="submit" class="primary-btn" style="border: none">
-                                    Add to Cart</button>
-                            </div>
+                            @if ($product->stok > 0)
+                                <div class="product_count">
+                                    <label for="quantity">Quantity:</label>
+                                    <input type="number" name="quantity" id="sst" maxlength="12" value="1"
+                                        title="Quantity:" class="input-text qty">
+                                    <button
+                                        onclick="increaseValue()"
+                                        class="increase items-count" type="button"><i
+                                            class="lnr lnr-chevron-up"></i></button>
+                                    <button
+                                        onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                                        class="reduced items-count" type="button"><i
+                                            class="lnr lnr-chevron-down"></i></button>
+                                </div>
+                                <div class="card_area d-flex align-items-center">
+                                    <button type="submit" class="primary-btn" style="border: none">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        var maxStock = {{ $product->stok }}; // Echo PHP variable into JavaScript
+    
+        function increaseValue() {
+            var input = document.getElementById('sst');
+            var currentValue = parseInt(input.value);
+    
+            // Check if current value is less than maximum stock
+            if (!isNaN(currentValue) && currentValue < maxStock) {
+                input.value = currentValue + 1;
+            }
+        }
+    </script>
     <!--================End Single Product Area =================-->
 @endsection

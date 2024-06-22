@@ -29,13 +29,13 @@
                             </div>
                             <div class="col-lg-7">
                                 <div class="banner-img">
-                                    <img class="img-fluid" src="img/image1.png" alt=""
+                                    <img class="img-fluid" src="img/image3.png" alt=""
                                         style="width: 70%; object-fit: contain; margin-left: auto;">
                                 </div>
                             </div>
                         </div>
                         <!-- single-slide -->
-                        <div class="row single-slide">
+                        <div class="row single-slide align-items-center d-flex">
                             <div class="col-lg-5 col-md-6">
                                 <div class="banner-content">
                                     <h1>Selamat <br>Datang!</h1>
@@ -52,7 +52,7 @@
                             </div>
                             <div class="col-lg-7">
                                 <div class="banner-img">
-                                    <img class="img-fluid" src="img/image1.png" alt=""
+                                    <img class="img-fluid" src="img/image3.png" alt=""
                                         style="width: 70%; object-fit: contain; margin-left: auto;">
                                 </div>
                             </div>
@@ -143,16 +143,22 @@
                                     <div class="price">
                                         <h6>Rp. {{ number_format($prod->harga, 0, '.', '.') }}</h6>
                                     </div>
-                                    <div class="prd-bottom">
-
-                                        <a href="" class="social-info">
-                                            <span class="ti-bag"></span>
-                                            <p class="hover-text">Add to Cart</p>
-                                        </a>
+                                    {{$prod->total_orders}} terjual
+                                    <div class="prd-bottom" style="display: flex; align-items: center;">
+                                        @if ($prod->stok > 0)
+                                            <a href="{{ route('product.add_to_cart_single', $prod->id) }}"
+                                                class="social-info">
+                                                <span class="ti-bag"></span>
+                                                <p class="hover-text">Add to Cart</p>
+                                            </a>
+                                        @else
+                                            <span style="color: var(--red); font-weight: 500; margin-right: 10px">Stok Habis</span>
+                                        @endif
                                         <a href="{{ route('product.detail', $prod->id) }}" class="social-info">
                                             <span class="lnr lnr-move"></span>
                                             <p class="hover-text">Lihat Detail</p>
                                         </a>
+
                                     </div>
                                 </div>
                             </div>
@@ -188,12 +194,18 @@
                                     <div class="price">
                                         <h6>Rp. {{ number_format($prod->harga, 0, '.', '.') }}</h6>
                                     </div>
-                                    <div class="prd-bottom">
-
-                                        <a href="{{ route('product.add_to_cart_single') }}" class="social-info">
-                                            <span class="ti-bag"></span>
-                                            <p class="hover-text">Add to Cart</p>
-                                        </a>
+                                    {{$prod->total_orders}} terjual
+                                    <div class="prd-bottom" style="display: flex; align-items: center;">
+                                        @if ($prod->stok > 0)
+                                            <a href="{{ route('product.add_to_cart_single', $prod->id) }}"
+                                                class="social-info">
+                                                <span class="ti-bag"></span>
+                                                <p class="hover-text">Add to Cart</p>
+                                            </a>
+                                        @else
+                                            <span style="color: var(--red); font-weight: 500; margin-right: 10px">Stok
+                                                Habis</span>
+                                        @endif
                                         <a href="{{ route('product.detail', $prod->id) }}" class="social-info">
                                             <span class="lnr lnr-move"></span>
                                             <p class="hover-text">Lihat Detail</p>

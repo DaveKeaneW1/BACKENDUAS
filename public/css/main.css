@@ -74,6 +74,10 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent; }
 
+.pagination.admin a.active, .pagination.admin a:hover {
+  background: linear-gradient(90deg, #00dcff 0%, #0083ff 100%);
+}
+
 /* Start primary btn css
 ============================================================================================ */
 .primary-btn {
@@ -1053,6 +1057,8 @@ h1, h2, h3, h4, h5, h6 {
           display: none; }
       .header_area .navbar .nav .nav-item:hover .nav-link, .header_area .navbar .nav .nav-item.active .nav-link {
         color: #ffba00; }
+      .header_area .navbar .nav .nav-item.admin:hover .nav-link, .header_area .navbar .nav .nav-item.admin.active .nav-link {
+          color: #0093ff; }
       .header_area .navbar .nav .nav-item.submenu {
         position: relative; }
         .header_area .navbar .nav .nav-item.submenu ul {
@@ -1066,7 +1072,7 @@ h1, h2, h3, h4, h5, h6 {
             .header_area .navbar .nav .nav-item.submenu ul {
               position: absolute;
               top: 140%;
-              left: 0px;
+              left: -140px;
               min-width: 200px;
               text-align: left;
               opacity: 0;
@@ -1284,7 +1290,13 @@ h1, h2, h3, h4, h5, h6 {
 .organic-breadcrumb {
   background: url(../img/banner/common-banner.jpg) center no-repeat;
   background-size: cover;
-  padding-top: 130px; }
+  padding-top: 80px; }
+
+.organic-breadcrumb.admin {
+  background: url(../img/banner/common-banner-blue.png) center no-repeat;
+  background-size: cover;
+  padding-top: 80px; }
+
   @media (max-width: 991px) {
     .organic-breadcrumb {
       padding-top: 80px; } }
@@ -3316,6 +3328,14 @@ label {
     display: none; }
 .sidebar-categories .main-nav-list.child a {
   padding-left: 32px; }
+.sidebar-categories .main-nav-list.active a {
+    color: #ffba00; }
+
+.sidebar-categories .main-nav-list a:hover {
+  color: #0093ff; }
+.sidebar-categories.admin .main-nav-list.active a {
+  color: #0093ff; }
+
 
 .sidebar-filter {
   margin-top: 50px; }
@@ -5790,4 +5810,7 @@ label {
   .footer-text i {
     color: #ffba00; }
 
+  .footer-text.admin a,
+  .footer-text.admin i {
+    color: #0093ff; }
 /*# sourceMappingURL=main.css.map */

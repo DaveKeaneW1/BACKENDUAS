@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
+use Exception;
 
 class CartController extends Controller
 {
@@ -55,7 +57,7 @@ class CartController extends Controller
     {
         // Ensure the user is authenticated
         if (!Auth::guard("customer")->check()) {
-            return redirect()->back()->with('error', 'Silahkan login terlebih dahulu.');
+            throw redirect()->back()->with('error', 'Silahkan login terlebih dahulu.');
         }
 
         $customerId = Auth::guard('customer')->user()->id;
@@ -68,18 +70,27 @@ class CartController extends Controller
 
         // If order item not found or doesn't belong to the customer, return an error response
         if (!$orderItem) {
-            return redirect()->back()->with('error', 'Order item not found or you do not have permission to remove it.');
+            throw redirect()->back()->with('error', 'Order item not found or you do not have permission to remove it.');
         }
 
-        $orderItemId = $request->input('orderItemId');
         $quantity = $request->input('quantity');
 
-        // Validate input as needed
-        $orderItem = OrderItem::findOrFail($orderItemId);
+        try {
+            $product = Product::findOrFail($orderItem->product->id);
+        } catch (Exception $e) {
+            throw redirect()->back()->with('error', $e->getMessage());
+        }
 
-        if ($quantity == 0) {
+        if ($quantity <= 0) {
             $orderItem->delete();
         } else {
+            // Check if the product is in stock
+            if ($product->stok <= 0) {
+                throw redirect()->back()->with('error', 'Stok untuk produk "' . $orderItem->product->nama . '" tidak tersedia.');
+            } else if ($quantity > $product->stok) {
+                throw redirect()->back()->with('error', 'Stok untuk produk "' . $orderItem->product->nama . '" tidak cukup.');
+            }
+
             $orderItem->jumlah = $quantity;
             $orderItem->save();
         }
@@ -157,8 +168,18 @@ class CartController extends Controller
 
         $total = 0;
 
-        foreach($order->orderItems as $orderItem){
+        foreach ($order->orderItems as $orderItem) {
             $total += $orderItem->jumlah * $orderItem->harga;
+
+            // Reduce the product stock
+            $product = Product::findOrFail($orderItem->product->id);
+            $product->stok -= $orderItem->jumlah;
+
+            if ($product->stok < 0) {
+                return redirect()->route('cart')->with('error', 'Stok untuk produk "' . $orderItem->product->nama . '" tidak cukup.');
+            }
+
+            $product->save();
         }
 
         $order->total = $total;

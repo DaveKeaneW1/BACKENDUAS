@@ -302,7 +302,7 @@
                 })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Failed to update quantity');
+                        window.location.reload();
                     }
                     // Optionally handle success or update UI
                     updateTotalPrice(orderItemId, newQuantity);

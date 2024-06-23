@@ -99,15 +99,18 @@ class ProductController extends Controller
             // Check if an OrderItem with the product already exists for this Order
             $orderItem = $order->orderItems()->where('product_id', $id)->first();
 
-            $cek_stok = $product->stok;
+            $cek_stok = 0;
             if ($orderItem) {
-                $cek_stok = $orderItem->jumlah += 1;
+                $cek_stok = $orderItem->jumlah + 1;
+            } else {
+                $cek_stok = 1;
             }
+
             // Check if the product is in stock
-            if ($cek_stok <= 0) {
-                return redirect()->back()->with('error', 'Produk tidak tersedia dalam stok.');
+            if ($product->stok <= 0) {
+                return redirect()->back()->with('error', 'Stok untuk produk "' . $orderItem->product->nama . '" tidak tersedia.');
             } else if ($cek_stok > $product->stok) {
-                return redirect()->back()->with('error', 'Stok produk tidak cukup.');
+                return redirect()->back()->with('error', 'Stok untuk produk "' . $orderItem->product->nama . '" tidak cukup.');
             }
 
             // Begin a database transaction
@@ -144,7 +147,7 @@ class ProductController extends Controller
             $product_id = $request->product_id;
             $jumlah = $request->quantity;
 
-            if($jumlah == 0){
+            if ($jumlah == 0) {
                 return redirect()->back()->with('error', "Jumlah produk tidak boleh kosong.");
             }
 
@@ -161,16 +164,18 @@ class ProductController extends Controller
             // Check if an OrderItem with the product already exists for this Order
             $orderItem = $order->orderItems()->where('product_id', $product_id)->first();
 
-            $cek_stok = $product->stok;
+            $cek_stok = 0;
             if ($orderItem) {
                 $cek_stok = $orderItem->jumlah + $jumlah;
+            } else {
+                $cek_stok = $jumlah;
             }
 
             // Check if the product is in stock
-            if ($cek_stok <= 0) {
-                return redirect()->back()->with('error', 'Produk tidak tersedia dalam stok.');
+            if ($product->stok <= 0) {
+                return redirect()->back()->with('error', 'Stok untuk produk "' . $orderItem->product->nama . '" tidak tersedia.');
             } else if ($cek_stok > $product->stok) {
-                return redirect()->back()->with('error', 'Stok produk tidak cukup.');
+                return redirect()->back()->with('error', 'Stok untuk produk "' . $orderItem->product->nama . '" tidak cukup.');
             }
 
             // Begin a database transaction
@@ -186,7 +191,7 @@ class ProductController extends Controller
                 $orderItem = OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $product_id,
-                    'jumlah' => 1,
+                    'jumlah' => $jumlah,
                     'harga' => $product->harga
                 ]);
             }
